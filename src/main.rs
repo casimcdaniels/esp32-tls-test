@@ -131,7 +131,7 @@ async fn main(spawner: Spawner) -> ! {
 
         socket.set_timeout(Some(embassy_time::Duration::from_secs(10)));
 
-        let remote_endpoint = (Ipv4Address::new(142, 250, 185, 68), 443);
+        let remote_endpoint = (Ipv4Address::new(52,58,181,123), 8883);
         println!("connecting...");
         let r = socket.connect(remote_endpoint).await;
         if let Err(e) = r {
@@ -169,15 +169,19 @@ async fn main(spawner: Spawner) -> ! {
         
 
         // esp-mbed-tls
-        set_debug(0);
+        // set_debug(0);
 
         // Comment the below line and rebuild
         let tls: Session<_, 4096> = Session::new(
-            socket,
-            "www.google.com",
+            &mut socket,
+            "broker.hivemq.com",
             Mode::Client,
-            TlsVersion::Tls1_3,
-            Certificates {
+            TlsVersion::Tls1_2,
+            Certificates { 
+                ca_chain: X509::pem(
+                concat!(include_str!("../certs/ca.pem"), "\0").as_bytes(),
+            )
+            .ok(),
                 ..Default::default()
             },
             Some(&mut rsa),
