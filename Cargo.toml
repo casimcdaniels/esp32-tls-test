@@ -52,3 +52,4 @@ static_cell = { version = "2.0", features = ["nightly"] }
 embedded-io-async = { version = "0.6.1" }
 embedded-tls = { version = "0.17.0", default-features = false, features = ["alloc", "embedded-io-adapters"]}
 esp-mbedtls = { git = "https://github.com/esp-rs/esp-mbedtls", features = ["esp32c3", "async"]}
+rust-mqtt = { version = "0.3.0", default-features = false }
